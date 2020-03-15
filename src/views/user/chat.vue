@@ -1,5 +1,5 @@
 <template>
-  <div>小智同</div>
+  <div>小智同学</div>
 </template>
 
 <script>

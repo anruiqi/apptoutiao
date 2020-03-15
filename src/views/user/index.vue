@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div>用户</div>
 </template>
 
 <script>
