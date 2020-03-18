@@ -21,6 +21,12 @@
 </template>
 
 <script>
+// 引入 login方法
+// import * as user from '@/api/user'
+// user.login
+import { login } from '@/api/user'
+// 辅助函数 把mutations方法映射到methods方法中
+import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -41,6 +47,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['updateUser']),
     // 定义检查手机号方法
     checkMobile () {
     //  获取手机号 判断 是否为空  满足手机号的格式
@@ -73,11 +80,20 @@ export default {
       return true
     },
     // 登录校验
-    login () {
+    async login () {
       //  校验手机号和验证码
       if (this.checkMobile() && this.checkCode()) {
         // 如果两个检查都是true 就表示通过了校验
-        console.log('校验通过')
+        try {
+          const result = await login(this.loginForm)
+          this.updateUser({ user: result })
+          const { redirectUrl } = this.$route.query
+          // redirectUrl有值的话 跳到该地址 没值的话 跳到 主页
+          this.$router.push(redirectUrl || '/')
+        } catch (error) {
+          // 提示消息 提示用户登录失败
+          this.$notify({ message: '用户名或者验证码错误', duration: 800 })
+        }
       }
     }
   }
