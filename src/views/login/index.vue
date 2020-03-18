@@ -82,8 +82,10 @@ export default {
     // 登录校验
     async login () {
       //  校验手机号和验证码
-      if (this.checkMobile() && this.checkCode()) {
-        // 如果两个检查都是true 就表示通过了校验
+      // 如果两个检查都是true 就表示通过了校验
+      const validateMobile = this.checkMobile()
+      const validateCode = this.checkCode()
+      if (validateMobile && validateCode) {
         try {
           const result = await login(this.loginForm)
           this.updateUser({ user: result })
@@ -92,7 +94,7 @@ export default {
           this.$router.push(redirectUrl || '/')
         } catch (error) {
           // 提示消息 提示用户登录失败
-          this.$notify({ message: '用户名或者验证码错误', duration: 800 })
+          this.$anotify({ message: '用户名或者验证码错误' })
         }
       }
     }
